@@ -39,13 +39,21 @@ output:
 mcr.microsoft.com/containernetworking/cilium/cilium:v1.17.4-250610
 ```
 
-kubectl create namespace endport-test
-
-
-
 ## endport 
 
-1. Deploy Server Pod
-This pod runs a simple Python HTTP server on a range of ports.
+Deploy the endport-test.yml, this will create the following resources: 
 
-```bash
+1. Create Namespace "endport-test"
+2. Deploy Server Pod "This pod runs a simple Python HTTP server on a range of ports."
+3. Deploy Client Pod
+4. Apply NetworkPolicy withendPort
+
+```
+kubectl apply -f endport-test.yml
+```
+Test Connectivity
+
+```
+curl <IP of test-server>:32000
+curl <IP of test-server>:32010
+```
