@@ -1,0 +1,69 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: endport-test
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-server
+  namespace: endport-test
+  labels:
+    app: test-server
+spec:
+  containers:
+    - name: server
+      image: python:3.9
+      command: ["sh", "-c"]
+      args:
+        - |
+          for port in $(seq 32000 32010); do
+            python3 -m http.server $port --bind 0.0.0.0 &
+          done;
+          sleep infinity
+      ports:
+        - containerPort: 32000
+        - containerPort: 32001
+        - containerPort: 32002
+        - containerPort: 32003
+        - containerPort: 32004
+        - containerPort: 32005
+        - containerPort: 32006
+        - containerPort: 32007
+        - containerPort: 32008
+        - containerPort: 32009
+        - containerPort: 32010
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-client
+  namespace: endport-test
+spec:
+  containers:
+    - name: client
+      image: curlimages/curl
+      command: ["sleep", "3600"]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-port-range
+  namespace: endport-test
+spec:
+  podSelector:
+    matchLabels:
+      app: test-server
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - protocol: TCP
+          port: 32000
+          endPort: 32010
+---
