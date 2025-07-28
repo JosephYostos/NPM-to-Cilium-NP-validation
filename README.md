@@ -57,3 +57,67 @@ Test Connectivity
 curl <IP of test-server>:32000
 curl <IP of test-server>:32010
 ```
+
+## ipBlock 
+
+Deploy the ipblock-test.yml, this will create the following resources: 
+
+1. Create Namespace "ipblock-test"
+2. Deploy Server Pod 
+3. Deploy Client Pod
+4. Apply NetworkPolicy withendPort "This policy allows egress to all IPs in 0.0.0.0/0"
+
+```
+kubectl apply -f ipblock-test.yml
+```
+
+**Test on NPM**
+
+1. Get the IP of the test-server pod and node IPs :
+
+```
+kubectl get pod test-server -n ipblock-test -o wide
+kubectl get nodes -o wide
+```
+2. From the test-client pod, run:
+
+```
+curl --max-time 3 <server-pod-ip>:8080
+curl --max-time 3 <node-ip>:10250
+```
+Expected Result (NPM): Traffic is allowed to both Pod IP and node IP.
+
+**Test on Cilium**
+
+Repeat the same steps on a cluster running Cilium.
+
+Expected Result (Cilium): Traffic to the Pod IP and the node IP is blocked, even though it matches the CIDR.
+
+**Remediation Steps:**
+- For Pod IPs: before migration to cilium NP, Add namespaceSelector and podSelector to explicitly allow traffic to pods:
+
+```
+egress:
+  - to:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+      - namespaceSelector: {}
+      - podSelector: {}
+```
+- For Node IPs: You must apply a CiliumNetworkPolicy after migration to allow egress to node IPs.
+
+example of CiliumNetworkPolicy to allow access to local and remote nodes
+
+```
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-node-egress
+  namespace: ipblock-test
+spec:
+  endpointSelector: {}  # Applies to all pods in the namespace
+  egress:
+     - toEntities:
+          - host # host allows traffic from/to the local node’s host network namespace
+          - remote-node 
+```
