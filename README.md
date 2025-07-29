@@ -137,4 +137,13 @@ From the test-client pod:
 curl --max-time 3 http://<Ip of test-server-1>:8080
 curl --max-time 3 http://<Ip of test-server-2>:8000
 ```
+# NetworkPolicy with Egress Policies (not Allow All)
 
+
+==================================
+NOTES:
+Named ports working on both NPM & cilium ---> https://github.com/cilium/cilium/issues/30003
+IPblock for node IPs works with -host & remote nodes
+is it ok to make this script public 
+
+NetworkPolicy with Egress Policies (not Allow All)
