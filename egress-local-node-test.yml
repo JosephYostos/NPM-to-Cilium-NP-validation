@@ -26,7 +26,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: test-pod
+      app: test-client
   policyTypes:
   - Egress
   egress:
@@ -40,7 +40,7 @@ spec:
 # kind: NetworkPolicy
 # metadata:
 #   name: deny-all-egress
-#   namespace: test-egress
+#   namespace: egress-local-node-test
 # spec:
 #   podSelector: {}  # Applies to all pods in the namespace
 #   policyTypes:
