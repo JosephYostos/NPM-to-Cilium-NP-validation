@@ -132,18 +132,30 @@ Deploy the named-port-test.yml, this will create the following resources:
 5. Apply NetworkPolicy withendPort "This policy allows egress to all IPs in 0.0.0.0/0"
 
 Test Connectivity
-From the test-client pod:
+Test Connectivity
 ```
 curl --max-time 3 http://<Ip of test-server-1>:8080
 curl --max-time 3 http://<Ip of test-server-2>:8000
 ```
 # NetworkPolicy with Egress Policies (not Allow All)
 
+Deploy the egress-local-node-test.yml, this will create the following resources: 
 
+1. Create Namespace "egress-local-node"
+2. Deploy Client Pod
+3. Apply NetworkPolicy to allow egress traffic only to 8.8.8.8/32
+4. Optional: apply Network policy to deny all egress traffic
+
+Test Connectivity
+
+access client pod 
+```
+kubectl exec -it -n egress-local-node test-client -- sh
+```
 ==================================
 NOTES:
 Named ports working on both NPM & cilium ---> https://github.com/cilium/cilium/issues/30003
 IPblock for node IPs works with -host & remote nodes
 is it ok to make this script public 
 
-NetworkPolicy with Egress Policies (not Allow All)
+NetworkPolicy with Egress Policies (not Allow All) ---> why we are not specifing not deny all?? 
