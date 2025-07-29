@@ -22,10 +22,10 @@ spec:
 
 ---
 apiVersion: v1
-: echo-service
 kind: Service
 metadata:
-  name  namespace: ingress-test
+  name: echo-service
+  namespace: ingress-test
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Cluster
