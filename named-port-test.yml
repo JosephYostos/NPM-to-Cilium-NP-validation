@@ -7,10 +7,10 @@ metadata:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-server
+  name: test-server-1
   namespace: named-port-test
   labels:
-    app: test-server
+    app: test-server-1
 spec:
   containers:
     - name: server
@@ -19,7 +19,22 @@ spec:
       ports:
         - containerPort: 8080
           name: http
-
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-server-2
+  namespace: named-port-test
+  labels:
+    app: test-server-2
+spec:
+  containers:
+    - name: server
+      image: python:3.9
+      command: ["python3", "-m", "http.server", "8000"]
+      ports:
+        - containerPort: 8000
+          name: http
 ---
 apiVersion: v1
 kind: Pod
