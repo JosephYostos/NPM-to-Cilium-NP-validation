@@ -150,8 +150,15 @@ Test Connectivity
 
 access client pod 
 ```
-kubectl exec -it -n egress-local-node test-client -- sh
+kubectl exec -it -n egress-local-node-test test-client -- sh
+curl --max-time 3 <local-node-ip>:10250
 ```
+Behaviour: 
+- on NPM: traffic to local node is allowed 
+- On cilium: traffic to local node is blocked
+
+# Ingress policy behaviour changes
+
 ==================================
 NOTES:
 Named ports working on both NPM & cilium ---> https://github.com/cilium/cilium/issues/30003
