@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: test-egress
+  name: egress-local-node-test
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-pod
-  namespace: test-egress
+  name: test-client
+  namespace: egress-local-node-test
   labels:
-    app: test-pod
+    app: test-client
 spec:
   containers:
   - name: curl
@@ -22,7 +22,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-egress-to-external
-  namespace: test-egress
+  namespace: egress-local-node-test
 spec:
   podSelector:
     matchLabels:
@@ -34,3 +34,15 @@ spec:
     - ipBlock:
         cidr: 8.8.8.8/32
 
+
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: deny-all-egress
+#   namespace: test-egress
+# spec:
+#   podSelector: {}  # Applies to all pods in the namespace
+#   policyTypes:
+#   - Egress
+#   egress: []  # No egress rules = deny all egress
