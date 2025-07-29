@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: named-port-test
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-server
+  namespace: named-port-test
+  labels:
+    app: test-server
+spec:
+  containers:
+    - name: server
+      image: python:3.9
+      command: ["python3", "-m", "http.server", "8080"]
+      ports:
+        - containerPort: 8080
+          name: http
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-client
+  namespace: named-port-test
+spec:
+  containers:
+    - name: client
+      image: curlimages/curl
+      command: ["sleep", "3600"]
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-named-port
+  namespace: named-port-test
+spec:
+  podSelector:
+    matchLabels:
+      app: test-server
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: http  # Named port
