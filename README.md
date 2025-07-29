@@ -134,6 +134,7 @@ Deploy the named-port-test.yml, this will create the following resources:
 Test Connectivity
 From the test-client pod:
 ```
-curl --max-time 3 http://test-server.named-port-test.svc.cluster.local:8080
+curl --max-time 3 http://<Ip of test-server-1>:8080
+curl --max-time 3 http://<Ip of test-server-2>:8000
 ```
 
