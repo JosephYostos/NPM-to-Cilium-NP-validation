@@ -39,7 +39,7 @@ output:
 mcr.microsoft.com/containernetworking/cilium/cilium:v1.17.4-250610
 ```
 
-## endport 
+# endport 
 
 Deploy the endport-test.yml, this will create the following resources: 
 
@@ -58,7 +58,7 @@ curl <IP of test-server>:32000
 curl <IP of test-server>:32010
 ```
 
-## ipBlock 
+# ipBlock 
 
 Deploy the ipblock-test.yml, this will create the following resources: 
 
