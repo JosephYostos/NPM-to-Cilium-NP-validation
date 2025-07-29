@@ -121,3 +121,17 @@ spec:
           - host # host allows traffic from/to the local node’s host network namespace
           - remote-node 
 ```
+# named port 
+
+Deploy the named-port-test.yml, this will create the following resources: 
+
+1. Create Namespace "named-port-test"
+2. Deploy Server Pod with Named Port
+3. Deploy Client Pod
+4. Apply NetworkPolicy withendPort "This policy allows egress to all IPs in 0.0.0.0/0"
+
+Test Connectivity
+```
+curl --max-time 3 http://test-server.named-port-test.svc.cluster.local:8080
+```
+
