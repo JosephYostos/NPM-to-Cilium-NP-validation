@@ -127,10 +127,12 @@ Deploy the named-port-test.yml, this will create the following resources:
 
 1. Create Namespace "named-port-test"
 2. Deploy Server Pod with Named Port
-3. Deploy Client Pod
-4. Apply NetworkPolicy withendPort "This policy allows egress to all IPs in 0.0.0.0/0"
+3. Deploy another Server Pod with the same Named Port and different port
+4. Deploy Client Pod
+5. Apply NetworkPolicy withendPort "This policy allows egress to all IPs in 0.0.0.0/0"
 
 Test Connectivity
+From the test-client pod:
 ```
 curl --max-time 3 http://test-server.named-port-test.svc.cluster.local:8080
 ```
