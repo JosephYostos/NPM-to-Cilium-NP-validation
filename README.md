@@ -159,10 +159,5 @@ Behaviour:
 
 # Ingress policy behaviour changes
 
-==================================
-NOTES:
-Named ports working on both NPM & cilium ---> https://github.com/cilium/cilium/issues/30003
-IPblock for node IPs works with -host & remote nodes
-is it ok to make this script public 
+Deploy the ingress-test.yml, this will create the following resources: 
 
-NetworkPolicy with Egress Policies (not Allow All) ---> why we are not specifing not deny all?? 
